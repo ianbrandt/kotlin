@@ -870,15 +870,19 @@ open class KotlinJpsBuildTest : KotlinJpsBuildTestBase() {
 
     @Test
     fun testJre11() {
-        val jdk11Path = KtTestUtil.getJdk11Home().absolutePath
-
-        val jdk = myModel.global.addSdk(JDK_NAME, jdk11Path, "11", JpsJavaSdkType.INSTANCE)
-        jdk.addRoot(StandardFileSystems.JRT_PROTOCOL_PREFIX + jdk11Path + URLUtil.JAR_SEPARATOR + "java.base", JpsOrderRootType.COMPILED)
+        addJdk11()
 
         loadProject(workDir.absolutePath + File.separator + PROJECT_NAME + ".ipr")
         addKotlinStdlibDependency()
 
         buildAllModules().assertSuccessful()
+    }
+
+    protected fun addJdk11() {
+        val jdk11Path = KtTestUtil.getJdk11Home().absolutePath
+
+        val jdk = myModel.global.addSdk(JDK_NAME, jdk11Path, "11", JpsJavaSdkType.INSTANCE)
+        jdk.addRoot(StandardFileSystems.JRT_PROTOCOL_PREFIX + jdk11Path + URLUtil.JAR_SEPARATOR + "java.base", JpsOrderRootType.COMPILED)
     }
 
     @Test
